@@ -1,0 +1,40 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+    
+D
+B
+B
+
+A
+
+
+//the required struct    
+struct node {
+  int count; // positive integers only, and non-increasing order
+  char symbol[10]; //no two nodes should have the same symboy
+  struct node *next;
+};    
+    
+int main(void) {
+
+  char command[25];  //receives the command
+  //initial query
+  printf("command?  ");
+  scanf("  %s", command);
+  printf("%s\n", command);
+   
+  //while loop for new commands
+  while (strcmp(command,"end") != 0) {
+  
+    
+    if (strcmp(command,"ins") == 0) {
+     puts("we got something"); 
+     return 0;   
+    }
+  }
+}
+
+
+

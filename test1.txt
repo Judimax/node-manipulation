@@ -1,0 +1,18 @@
+ins  s1
+ins  s2
+ins  s3
+prl            
+ins  s3
+ins  s2
+prl            
+pst            
+ins  s11
+ins  s22
+ins  s33
+ins  terminator
+prl            
+ppr  s1 
+fde  1
+prl   
+pst  
+end

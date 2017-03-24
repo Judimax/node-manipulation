@@ -1,0 +1,57 @@
+ins  s1
+ins  s2
+ins  s3
+prl            
+
+        s1  1
+        s2  1
+        s3  1
+
+ins  s3
+ins  s2
+prl            
+
+        s3  2
+        s2  2
+        s1  1
+
+pst            
+
+        No. of nodes = 3
+        Max. count   = 2
+        Min. count   = 1
+        Avg. count   = 1.67
+
+ins  s11
+ins  s22
+ins  s33
+ins  terminator
+prl            
+
+        s3  2
+        s2  2
+        s1  1
+        s11 1
+        s22 1
+        s33 1
+        terminator 1
+
+ppr  s1        
+
+        s1  1
+        s11 1
+
+fde  1
+prl            
+
+        s3  2
+        s2  2
+
+pst            
+
+        No. of nodes = 2
+        Max. count   = 2
+        Min. count   = 2
+        Avg. count   = 2.0
+
+end
