@@ -37,7 +37,7 @@ int main(void) {
 
        insert_node(&head,&temp,command, counter);
        print_list(head);
-       counter++;
+
 
     }
     printf("command?  ");
@@ -58,6 +58,7 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
   /* respectively. */
   struct node *temp;
   int i =0;//counter to properly put value in symbol section
+  int a = 0;// flag if string was already in linked list
   printf("value coming in %s\n", v);
   if ((temp = (struct node *)malloc(sizeof(struct node))) == NULL) {
     printf("Node allocation failed. \n");
@@ -66,9 +67,19 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
   /* Space for node obtained. Copy the value v into the node */
   /* and insert the node at the end of the list. */
 
- 
+  struct node* check = *h;
+  while(check != NULL) {
+      if (strcmp(v,check->symbol[0]) == 0) {
+         check->count++;
+         a = 1;
+         break;
+      }
+      check = check->next;
+  }
+   
+  if (a==0) {
   temp->count = c;
-  //printf("this is the length of the input string %d\n value coming in %s\n", sizeof(v),v);
+
 
   while(v[i] != NULL) {
      temp->symbol[0][i] = v[i];
@@ -76,7 +87,7 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
      i++;
   }
   temp->next = NULL;
-
+  
   if (*h == NULL) {
     /* List is currently empty. */
     *h = *t = temp;
@@ -87,9 +98,11 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
     *t = (*t)->next;
      
   }
+  }
 
 
-} /* End of insert_node. */
+}
+    /* End of insert_node. */
 
 void print_list(struct node *h) {
   /* Prints the values stored in the nodes of the list */
