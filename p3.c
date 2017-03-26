@@ -72,7 +72,7 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
 
   while(v[i] != NULL) {
      temp->symbol[0][i] = v[i];
-     printf("%c", temp->symbol[0][i]);
+
      i++;
   }
   temp->next = NULL;
