@@ -1,1 +1,1 @@
-working on insert part of program
+make print the string a loop in the print list function so you can see everything in the code
