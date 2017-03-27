@@ -13,13 +13,13 @@ struct node {
 
 void insert_node(struct node**, struct node**, char[],int);
   /* Pointers to the first and last nodes of list are used */
-void print_list(struct node*,float *, int[],char[]); 
+char* print_list(struct node*,float *, int[],char * ); 
   /* handles several of the print commands in the code */
 void rearrange_list(struct node**,struct node**);
   /* rearranges list to be in descreasing count order */
 void delete_node(struct node**, struct node**, char[]);
   /*decreases count of node or deletes it altogether*/
-void forced_delete_node(struct node**, struct node**,char[]);
+void forced_delete_node(struct node**, struct node**,char*);
   /*deletes all nodes with counts less than or equal to the specified number*/
 
 
@@ -33,7 +33,8 @@ int main(void) {
   int calcs[2];      //used to return values for pst
   calcs[1] =1;       //used to preset min count value in the list which can only be one
   calcs[2] =0;       // used to preset max count value in the list,if the list has one onde
-  float avgs;       //used to return avg for pst  
+  float avgs;       //used to return avg for pst
+  char* decision;         //for printing a certain value
   printf("command?  ");
   scanf("%s", command);
 
@@ -75,11 +76,14 @@ int main(void) {
     if (strcmp(command,"pst") == 0) {
         
 
-        print_list(head,&avgs,calcs,command);
-        printf(" The number of nodes in the list : %d\n", calcs[0]);
-        printf(" The maximum count in the list : %d\n", calcs[2]);    //was not working properly
-        printf(" The minimum count in the list : %d\n", calcs[1]);
-        printf(" The average count in the list : %f\n", avgs);
+        decision = print_list(head,&avgs,calcs,command);   //instruct program to make a choice about printing
+        //printf("%s",decision);
+        if(strcmp(decision,"The list is empty") != 0) {
+            printf(" The number of nodes in the list : %d\n", calcs[0]);
+            printf(" The maximum count in the list : %d\n", calcs[2]);    //was not working properly
+            printf(" The minimum count in the list : %d\n", calcs[1]);
+            printf(" The average count in the list : %f\n", avgs);
+        }    
     }   
     printf("command?  ");
     scanf("%s", command);
@@ -254,20 +258,26 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
 }
     /* End of insert_node. */
 
-void print_list(struct node *h, float* avg, int * stats, char c_string[]) {
+char* print_list(struct node *h, float* avg, int * stats, char  c_string[]) {
   /* Prints the values stored in the nodes of the list */
   /* pointed to by h. */
   int i = 0;
-  float sum =0.0;  
+  float sum =0.0;
+  char k_string[SIZE];                 //to keep the value of the command string (c_string) so list doenst print
+  strcpy(k_string,c_string);  
   struct node * prev;              //to get maximum  and minimun values
   struct node * check;             //check if we are at the beginning of the list  
   if (h == NULL) {
     printf("The list is empty.\n");
+    c_string = "The list is empty"; 
   }
   else {
     //printf("Values in the list are:\n");
     while (h != NULL) {
-      printf("%d\n %s\n",h->count,h->symbol[0]);
+      
+      if(strcmp(k_string,"pst") != 0) { 
+        printf("%d\n %s\n",h->count,h->symbol[0]);
+        }  
       if(prev != NULL) {
         if (prev->count < h->count) {
             stats[1] = prev->count;   
@@ -293,4 +303,5 @@ void print_list(struct node *h, float* avg, int * stats, char c_string[]) {
     stats[0] = i;  
     *avg = sum/(float)i;  
   }
+    
 } /* End of print_list */
