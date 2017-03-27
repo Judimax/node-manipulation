@@ -71,6 +71,25 @@ int main(void) {
         rearrange_list(&head,&temp);
         //print_list(head,avgs,calcs);
         
+    } 
+    
+    if (strcmp(command,"prl") == 0) {
+        
+        print_list(head,&avgs,calcs,command);
+        
+    }  
+      
+    if (strcmp(command,"pcr") == 0) {
+        
+        char holder[4] = "pcr";                //used to tell print_list node what to do for command
+        scanf("%s", command);                  //using calcs array that returns statistics for range values
+        calcs[1] = *command- '0';
+        scanf("%s", command);
+        calcs[2] = *command-'0';
+        printf("this is where we begin %d\n", calcs[1]);
+        printf("this is where we end %d\n", calcs[2]);
+        print_list(head,&avgs,calcs,holder);
+        
     }  
     
     if (strcmp(command,"pst") == 0) {
@@ -99,7 +118,7 @@ void forced_delete_node(struct node **h, struct node **t,char val[]) {
     struct node* check = *h;         //used to remove every unsatisfied condition of the linkedlist
     struct node* prev;               // node used to delete specified node if count was less than val
     char value = val[0];                      // to transfer the value
-    int num_conv = value - 48;            //required to remove 48 to complete interger conversion
+    int num_conv = value - '0';            //required to remove 48 to complete interger conversion
 
 
     while(check != NULL) {
@@ -266,30 +285,35 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[]) {
   char k_string[SIZE];                 //to keep the value of the command string (c_string) so list doenst print
   strcpy(k_string,c_string);  
   struct node * prev;              //to get maximum  and minimun values
-  struct node * check;             //check if we are at the beginning of the list  
+  struct node * check = h;             //check if we are at the beginning of the list  
   if (h == NULL) {
     printf("The list is empty.\n");
-    c_string = "The list is empty"; 
+    c_string = "The list is empty";
+    return c_string;
   }
   else {
     //printf("Values in the list are:\n");
-    while (h != NULL) {
+    while (check != NULL) {
       
-      if(strcmp(k_string,"pst") != 0) { 
-        printf("%d\n %s\n",h->count,h->symbol[0]);
-        }  
-      if(prev != NULL) {
-        if (prev->count < h->count) {
-            stats[1] = prev->count;   
+      if(strcmp(k_string,"prl") == 0) {                           //conditional that prints the whole list
+        printf("count: %d  symbol:  %s\n",check->count,check->symbol[0]);
         }
-        if (prev->count > h->count) {
-            stats[2] = prev->count;   
+      
+      if (strcmp(k_string,"pst") == 0 ) { 
+        if(prev != NULL) {
+            if (prev->count < check->count) {
+                stats[1] = prev->count;   
+            }
+            if (prev->count >= check->count) {
+                stats[2] = prev->count;   
+            }
+        }     
+        else{
+            stats[2] = check->count;    
         }
       }
-      else{
-        stats[2] = h->count;    
-      }
-      sum += h->count;   
+      
+      sum += check->count;   
       //printf("size of string %d\n",sizeof(h->symbol[0]));
       /*while(i != sizeof(h->symbol) ) {
           printf("%s ", h->symbol);
@@ -297,11 +321,26 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[]) {
           i++;
       } */
       i++;
-      prev = h;  
-      h = h->next;
+      prev = check;  
+      check = check->next;
     }
     stats[0] = i;  
-    *avg = sum/(float)i;  
+    *avg = sum/(float)i;
+    if (strcmp(k_string,"pst") == 0 ) {  
+        return "done";
+    }   
   }
+  if (strcmp(k_string,"pcr") == 0 ) {
+    i = 0;
+    check = h;
+    while(check != NULL) {
+        if(i >= stats[1] && i<=stats[2]) {
+            printf("count: %d  symbol:  %s\n",check->count,check->symbol[0]);
+        }
+        check = check->next;
+        i++;
+    }
+  }  
+  
     
 } /* End of print_list */
