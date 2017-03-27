@@ -1,3 +1,5 @@
 .DS_Store
 core
 p3exec
+.gitignore~
+.out
