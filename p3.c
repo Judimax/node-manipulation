@@ -57,6 +57,7 @@ void rearrange_list(struct node **h) {
       struct node* check = *h;
       struct node* carrier;
       struct node* prev;
+      int a =0;
       while(check != NULL) {
       if (check->next == NULL){              //if there is only one node in the list
 
@@ -74,6 +75,7 @@ void rearrange_list(struct node **h) {
               check->next = carrier;
               (**h).next = check;
               //print_list(*h);
+              rearrange_list(h);
               break;
           }
           else {
@@ -84,6 +86,8 @@ void rearrange_list(struct node **h) {
               //print_list(carrier);
               //printf("\n");
               check->next->next = carrier;
+              rearrange_list(h);
+              break;
           }
           
             /*carrier = check->next->next;
