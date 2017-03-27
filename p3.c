@@ -19,6 +19,10 @@ void rearrange_list(struct node**,struct node**);
   /* rearranges list to be in descreasing count order */
 void delete_node(struct node**, struct node**, char[]);
   /*decreases count of node or deletes it altogether*/
+void forced_delete_node(struct node**, struct node**,char[]);
+  /*deletes all nodes with counts less than or equal to the specified number*/
+
+
 
 int main(void) {
 
@@ -48,11 +52,22 @@ int main(void) {
     if (strcmp(command,"del") == 0) {
         
         scanf("%s", command);
+        
         delete_node(&head,&temp,command);
         rearrange_list(&head,&temp);
         print_list(head);
         
-    }    
+    }  
+      
+    if (strcmp(command,"fde") == 0) {
+        
+        scanf("%s", command);
+        
+        forced_delete_node(&head,&temp,command);
+        rearrange_list(&head,&temp);
+        print_list(head);
+        
+    }  
     printf("command?  ");
     scanf("%s", command);
   
@@ -60,7 +75,39 @@ int main(void) {
 
 
 free(temp);
+  //end of main   
 }
+
+void forced_delete_node(struct node **h, struct node **t,char val[]) {
+    struct node* check = *h;         //used to remove every unsatisfied condition of the linkedlist
+    struct node* prev;               // node used to delete specified node if count was less than val
+    char value = val[0];                      // to transfer the value
+    int num_conv = value - 48;            //required to remove 48 to complete interger conversion
+
+
+    while(check != NULL) {
+        
+        
+        if (check->count <= num_conv) {
+            printf("this is the count of the current check %d\n",check->count);
+            printf("this is the comparsion value %d\n", num_conv);
+            if (check == *h) {
+                *h = check->next;
+            }
+            else {
+                prev->next = check->next;
+
+            }
+        }
+        prev = check;
+        check = check->next;
+    }
+    
+}
+//end of forced delete node
+
+
+
 
 void delete_node(struct node **h, struct node **t, char string[]) {
   struct node* check = *h;         //linked list that will be used to check to delete specified string
@@ -69,7 +116,12 @@ void delete_node(struct node **h, struct node **t, char string[]) {
       if (strcmp(string,check->symbol[0]) == 0) {
          check->count--;
          if (check->count == 0) {
-            prev->next = check->next;
+            if (check == *h) {
+                *h = check->next;
+            }
+            else {
+                prev->next = check->next;
+            }    
          }   
          break;
       }
