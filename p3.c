@@ -15,7 +15,7 @@ void insert_node(struct node**, struct node**, char[],int);
   /* Pointers to the first and last nodes of list are used */
 void print_list(struct node*); 
   /* prints everything in the list */
-void rearrange_list(struct node**);
+void rearrange_list(struct node**,struct node**);
   /* rearranges list to be in descreasing count order */
 
 int main(void) {
@@ -23,7 +23,7 @@ int main(void) {
 
   char command[25];  //receives the command
   //initial query
-  int counter =0;
+  int counter =1;    //value to initalize node upon creation
   printf("command?  ");
   scanf("%s", command);
 
@@ -37,7 +37,7 @@ int main(void) {
        scanf("%s", command);
 
        insert_node(&head,&temp,command, counter);
-       rearrange_list(&head);
+       rearrange_list(&head,&temp);
        print_list(head);
 
 
@@ -45,22 +45,20 @@ int main(void) {
     printf("command?  ");
     scanf("%s", command);
   
-
-
 }
 
 
 free(temp);
 }
 
-void rearrange_list(struct node **h) {
+void rearrange_list(struct node **h, struct node **t) {
       struct node* check = *h;
       struct node* carrier;
       struct node* prev;
-      int a =0;
+      int a =0;                              //counter for recursion to check rest of list
       while(check != NULL) {
       if (check->next == NULL){              //if there is only one node in the list
-
+         *t = check;
          break; 
       }
       //printf("this is what im looking at %d\n", check->count );
@@ -75,7 +73,7 @@ void rearrange_list(struct node **h) {
               check->next = carrier;
               (**h).next = check;
               //print_list(*h);
-              rearrange_list(h);
+              rearrange_list(h,t);
               break;
           }
           else {
@@ -86,7 +84,7 @@ void rearrange_list(struct node **h) {
               //print_list(carrier);
               //printf("\n");
               check->next->next = carrier;
-              rearrange_list(h);
+              rearrange_list(h,t);
               break;
           }
           
@@ -95,14 +93,13 @@ void rearrange_list(struct node **h) {
             check->next->next = pre_carrier;
             pre_carrier->next =carrier;
             */
-
-          
-
       }
       prev = check;
       check = check->next;
   }   
 }
+
+
 
 void insert_node(struct node **h, struct node **t, char v[], int c ) {
   /* Creates a new node with value given by parameter v */
@@ -111,7 +108,7 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
   /* respectively. */
   struct node *temp;
   int i =0;//counter to properly put value in symbol section
-  int a = 0;// flag if string was already in linked list
+  int a =0;// flag if string was already in linked list
   //printf("value coming in %s\n", v);
   if ((temp = (struct node *)malloc(sizeof(struct node))) == NULL) {
     printf("Node allocation failed. \n");
@@ -121,16 +118,17 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
   /* and insert the node at the end of the list. */
 
   struct node* check = *h;         //linked list that will be used to check for string duplicates
-  struct node* carrier;            //holds rest of list while list is being adjusted
-  struct node* pre_carrier;        //holds everything before the node while the list is changed  
+
+
   while(check != NULL) {           // algorithm for the job
       if (strcmp(v,check->symbol[0]) == 0) {
          check->count++;
          a = 1;
-         break;
       }
       check = check->next;
-  }
+  } 
+    
+  
    
   if (a==0) {                    //conditional statement referring to flag is string was not in linked list
       
@@ -154,7 +152,7 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
   }
   }
     
-  check = *h; // algorithm the take care of any increasing counts in the linked list  
+
 
 }
     /* End of insert_node. */
