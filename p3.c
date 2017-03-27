@@ -17,6 +17,8 @@ void print_list(struct node*);
   /* prints everything in the list */
 void rearrange_list(struct node**,struct node**);
   /* rearranges list to be in descreasing count order */
+void delete_node(struct node**, struct node**, char[]);
+  /*decreases count of node or deletes it altogether*/
 
 int main(void) {
 
@@ -34,7 +36,7 @@ int main(void) {
     
     if (strcmp(command,"ins") == 0) {
 
-       scanf("%s", command);
+       scanf("%s", command);                        //to scan string to be inserted
 
        insert_node(&head,&temp,command, counter);
        rearrange_list(&head,&temp);
@@ -42,6 +44,15 @@ int main(void) {
 
 
     }
+      
+    if (strcmp(command,"del") == 0) {
+        
+        scanf("%s", command);
+        delete_node(&head,&temp,command);
+        rearrange_list(&head,&temp);
+        print_list(head);
+        
+    }    
     printf("command?  ");
     scanf("%s", command);
   
@@ -50,6 +61,25 @@ int main(void) {
 
 free(temp);
 }
+
+void delete_node(struct node **h, struct node **t, char string[]) {
+  struct node* check = *h;         //linked list that will be used to check to delete specified string
+  struct node* prev;               // node used to delete specified node if count went to zero
+  while(check != NULL) {           // algorithm for the job
+      if (strcmp(string,check->symbol[0]) == 0) {
+         check->count--;
+         if (check->count == 0) {
+            prev->next = check->next;
+         }   
+         break;
+      }
+      prev = check;
+      check = check->next;
+  }         
+}
+
+
+
 
 void rearrange_list(struct node **h, struct node **t) {
       struct node* check = *h;
