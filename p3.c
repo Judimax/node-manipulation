@@ -13,7 +13,7 @@ struct node {
 
 void insert_node(struct node**, struct node**, char[],int);
   /* Pointers to the first and last nodes of list are used */
-char* print_list(struct node*,float *, int[],char * ); 
+char* print_list(struct node*,float *, int[],char * ,char *); 
   /* handles several of the print commands in the code */
 void rearrange_list(struct node**,struct node**);
   /* rearranges list to be in descreasing count order */
@@ -71,11 +71,26 @@ int main(void) {
         rearrange_list(&head,&temp);
         //print_list(head,avgs,calcs);
         
-    } 
+    }
+      
     
+    if (strcmp(command,"ppr") == 0) {
+        scanf("%s", command);
+        print_list(head,&avgs,calcs,"ppr",command);       //to satisfy default print arguments, and get nodes with prefix strings
+        
+    }
+    
+   if (strcmp(command,"psu") == 0) {
+        scanf("%s", command);
+        print_list(head,&avgs,calcs,"psu",command);       //to satisfy default print arguments, and get nodes with prefix strings
+        
+    }
+      
+      
+      
     if (strcmp(command,"prl") == 0) {
         
-        print_list(head,&avgs,calcs,command);
+        print_list(head,&avgs,calcs,command,decision);
         
     }  
       
@@ -88,14 +103,14 @@ int main(void) {
         calcs[2] = *command-'0';
         printf("this is where we begin %d\n", calcs[1]);
         printf("this is where we end %d\n", calcs[2]);
-        print_list(head,&avgs,calcs,holder);
+        print_list(head,&avgs,calcs,holder,decision);
         
     }  
     
     if (strcmp(command,"pst") == 0) {
         
 
-        decision = print_list(head,&avgs,calcs,command);   //instruct program to make a choice about printing
+        decision = print_list(head,&avgs,calcs,command,"placeholder");   //instruct program to make a choice about printing
         //printf("%s",decision);
         if(strcmp(decision,"The list is empty") != 0) {
             printf(" The number of nodes in the list : %d\n", calcs[0]);
@@ -277,7 +292,7 @@ void insert_node(struct node **h, struct node **t, char v[], int c ) {
 }
     /* End of insert_node. */
 
-char* print_list(struct node *h, float* avg, int * stats, char  c_string[]) {
+char* print_list(struct node *h, float* avg, int * stats, char  c_string[],char part[]) {
   /* Prints the values stored in the nodes of the list */
   /* pointed to by h. */
   int i = 0;
@@ -330,17 +345,33 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[]) {
         return "done";
     }   
   }
-  if (strcmp(k_string,"pcr") == 0 ) {
+  if (strcmp(k_string,"pcr") == 0 ) {      //conditional that prints desired indexes of linked list
     i = 0;
     check = h;
     while(check != NULL) {
-        if(i >= stats[1] && i<=stats[2]) {
+        if(i >= stats[1] && i<=stats[2]) {     //used stats indexes as ranges instead
             printf("count: %d  symbol:  %s\n",check->count,check->symbol[0]);
         }
         check = check->next;
         i++;
     }
-  }  
+  } 
+    
+  if (strcmp(k_string,"ppr") == 0 ) {      //conditional that prints desired indexes of linked list
+    i = 0;
+    check = h;
+    char * function_compatible;             //so test condition can work in string
+    while(check != NULL) {
+        //printf("this is the value the function is returning %d\n", strstr(check->symbol[0],part));
+        //printf("this is the value in the node %s\n",part);
+        if(strstr(check->symbol[0],part) > 0) {     //used stats indexes as ranges instead
+            printf("count: %d  symbol:  %s\n",check->count,check->symbol[0]);
+        }
+        check = check->next;
+        i++;
+    }
+  }    
+
   
     
 } /* End of print_list */
