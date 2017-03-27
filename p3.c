@@ -86,16 +86,18 @@ void forced_delete_node(struct node **h, struct node **t,char val[]) {
 
 
     while(check != NULL) {
-        
+         
         
         if (check->count <= num_conv) {
-            printf("this is the count of the current check %d\n",check->count);
-            printf("this is the comparsion value %d\n", num_conv);
+            //printf("this is the count of the current check %d\n",check->count);
+            //printf("this is the comparsion value %d\n", num_conv);
             if (check == *h) {
                 *h = check->next;
+                 forced_delete_node(h,t,val);
             }
             else {
                 prev->next = check->next;
+                forced_delete_node(h,t,val);
 
             }
         }
