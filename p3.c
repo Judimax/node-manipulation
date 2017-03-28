@@ -18,9 +18,9 @@ char* print_list(struct node*,float *, int[],char * ,char *);
   /* handles several of the print commands in the code */
 void rearrange_list(struct node**,struct node**);
   /* rearranges list to be in descreasing count order */
-void delete_node(struct node**, struct node**, char[]);
+void delete_node(struct node**, struct node**, int[], char[]);
   /*decreases count of node or deletes it altogether*/
-void forced_delete_node(struct node**, struct node**,char*);
+void forced_delete_node(struct node**, struct node**, int[], char*);
   /*deletes all nodes with counts less than or equal to the specified number*/
 
 
@@ -58,7 +58,7 @@ int main(void) {
         
         scanf("%s", command);
         
-        delete_node(&head,&temp,command);
+        delete_node(&head,&temp,calcs,command);
         rearrange_list(&head,&temp);
         //print_list(head,avgs,calcs);
         
@@ -68,7 +68,7 @@ int main(void) {
         
         scanf("%s", command);
         
-        forced_delete_node(&head,&temp,command);
+        forced_delete_node(&head,&temp,calcs,command);
         rearrange_list(&head,&temp);
         //print_list(head,avgs,calcs);
         
@@ -115,8 +115,8 @@ int main(void) {
         //printf("%s",decision);
         if(strcmp(decision,"The list is empty") != 0) {
             printf(" The number of nodes in the list : %d\n", calcs[0]);
-            printf(" The maximum count in the list : %d\n", calcs[2]);    //was not working properly
-            printf(" The minimum count in the list : %d\n", calcs[1]);
+            printf(" The maximum count in the list : %d\n", calcs[1]);    //was not working properly
+            printf(" The minimum count in the list : %d\n", calcs[2]);
             printf(" The average count in the list : %f\n", avgs);
         }    
     }   
@@ -130,26 +130,29 @@ free(temp);
   //end of main   
 }
 
-void forced_delete_node(struct node **h, struct node **t,char val[]) {
+void forced_delete_node(struct node **h, struct node **t,int *stats,char val[]) {
     struct node* check = *h;         //used to remove every unsatisfied condition of the linkedlist
     struct node* prev;               // node used to delete specified node if count was less than val
     char value = val[0];                      // to transfer the value
     int num_conv = value - '0';            //required to remove 48 to complete interger conversion
 
-
+    
     while(check != NULL) {
          
         
         if (check->count <= num_conv) {
+            if(check->count == stats[1]) {                 //because when the fde val is the max count, the max count must be reset
+                stats[1] = 0;
+            }    
             //printf("this is the count of the current check %d\n",check->count);
             //printf("this is the comparsion value %d\n", num_conv);
             if (check == *h) {
                 *h = check->next;
-                 forced_delete_node(h,t,val);
+                 forced_delete_node(h,t,stats,val);
             }
             else {
                 prev->next = check->next;
-                forced_delete_node(h,t,val);
+                forced_delete_node(h,t,stats,val);
 
             }
         }
@@ -163,11 +166,14 @@ void forced_delete_node(struct node **h, struct node **t,char val[]) {
 
 
 
-void delete_node(struct node **h, struct node **t, char string[]) {
+void delete_node(struct node **h, struct node **t,int * stats, char string[]) {
   struct node* check = *h;         //linked list that will be used to check to delete specified string
   struct node* prev;               // node used to delete specified node if count went to zero
   while(check != NULL) {           // algorithm for the job
       if (strcmp(string,check->symbol[0]) == 0) {
+         if (check->count == stats[1]){
+            stats[1] -= 1;
+         }    
          check->count--;
          if (check->count == 0) {
             if (check == *h) {
@@ -181,7 +187,8 @@ void delete_node(struct node **h, struct node **t, char string[]) {
       }
       prev = check;
       check = check->next;
-  }         
+  }
+  
 }
 
 
@@ -202,8 +209,7 @@ void rearrange_list(struct node **h, struct node **t) {
       if (check->count < check->next->count  ) {
 
           if (check == *h) {
-              puts("we almost done with this function");
-              //puts("One try, God is the greatest!!!");
+              //puts("we almost done with this function");
               *h = check->next;
               carrier = check->next->next;
               check->next = carrier;
@@ -316,17 +322,17 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[],char 
         printf("count: %d  symbol:  %s\n",check->count,check->symbol[0]);
         }
       
-      if (strcmp(k_string,"pst") == 0 ) { 
-        if(prev != NULL) {
-            if (prev->count < check->count) {
-                stats[1] = prev->count;   
+      if (strcmp(k_string,"pst") == 0 ) {                //algorithm that uses last node to compare against next node for largest value
+
+            if (stats[1] < check->count) {               //to find the greatest count but if count is deleted stats must be chaged
+                stats[1] = check->count;   
             }
-            if (prev->count >= check->count) {
-                stats[2] = prev->count;   
+            if (stats[2] >= check->count) {               //to find the least count
+                stats[2] = check->count;   
             }
-        }     
+
         else{
-            stats[2] = check->count;    
+            stats[1] = check->count;                       //initalizes the greatest variable    
         }
       }
       
