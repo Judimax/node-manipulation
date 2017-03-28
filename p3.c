@@ -1,4 +1,18 @@
-#include <stdlib.h>
+/*
+
+Name: Michael Odumosu
+Unix login id: mo422733
+
+Lab Day: Friday
+Lab Time: 1:40pm
+
+Project Description : this program is a very powerful program with several capabilities in terms of manipulating and displaying information from a linked list, although the node sturcture object is simple, this program can insert new nodes, rearrage the nodes according to a decreasing occurence of the node, and remove node(s) from the linked lists by either specify a string, or specify a number and all nodes with counts less than that number are to be removed from this list. In addition the program provides the user with several helpful print functions to get what is needed from the data.
+*/
+
+
+
+
+#include <stdlib.h>   //calling libraries
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
