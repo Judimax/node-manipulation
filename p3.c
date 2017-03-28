@@ -364,7 +364,7 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[],char 
     int a;                              //flag to let code know not to print the string
     check = h;
     char * function_compatible;
-    function_compatible = part;  
+    function_compatible = part;
     while(check != NULL) {
         a = 0;
         //printf("this is the value the function is returning %d\n", strstr(check->symbol[0],part));
@@ -390,25 +390,47 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[],char 
         check = check->next;
         i++;
     }
+    //end of print prefix command  
   }    
 
   if (strcmp(k_string,"psu") == 0 ) {      //conditional that prints desired indexes of linked list
     i = 0;
+    int a;                              //flag to let code know not to print the string
+    int b;                              //contains length of test string so loop know to compare against the difference in strings
     check = h;
-    char  function_compatible[SIZE];              //to make functions returns proper indexes not addresses in memory   
+    char * function_compatible;
+    function_compatible = part;
+    //printf("this is what strlen says about the string %d\n",strlen(check->symbol[0])); 
     while(check != NULL) {
-        strcpy(function_compatible,check->symbol[0]);
-        printf("this is the value the function is returning %d\n", strstr(function_compatible,part));
-        printf("this is the value in the node %s\n",function_compatible);
-        if(strstr(check->symbol[0],part) > 0) {     //used stats indexes as ranges instead
-            printf("this is the length of the string %d\n",strlen(check->symbol[0]));
-            printf("this index should be one : %d\n",function_compatible[1]  - function_compatible[0]);
+        a = 0;
+        j = strlen(check->symbol[0]) -1;
+        b =  strlen(function_compatible) -1;
+        //printf("this is the value the function is returning %d\n", strstr(check->symbol[0],part));
+        //printf("this is the value in the node %s\n",part);
+        
+        while ( b != -1 ) {
+            //printf(" I compare string %c:  with symbol %c\n", function_compatible[b], check->symbol[0][j] );
+            if (function_compatible[b] == check->symbol[0][j] ) {
+                        
+            }
+            else {
+                //puts("break this code");
+                a = 1;
+                break;                                         //if it does not satisfy the conditional, it will not work anyway
+            }
+            j--;
+            b--;
+        } 
+        j = 0;
+        
+        if(a != 1) {     //used stats indexes as ranges instead
             printf("count: %d  symbol:  %s\n",check->count,check->symbol[0]);
         }
         check = check->next;
         i++;
     }
-  }  
+    //end of print suffix command  
+  } 
   
     
 } /* End of print_list */
