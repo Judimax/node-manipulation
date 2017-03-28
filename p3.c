@@ -46,9 +46,14 @@ int main(void) {
     if (strcmp(command,"ins") == 0) {
 
        scanf("%s", command);                        //to scan string to be inserted
-
-       insert_node(&head,&temp,command, counter);
-       rearrange_list(&head,&temp);
+       if(strlen(command) > 10) {                   // to check if string is greater than 10 characters
+        puts("this string cannot be added to the node");
+       }
+       
+       else { 
+        insert_node(&head,&temp,command, counter);
+        rearrange_list(&head,&temp);
+       }
        //print_list(head,avgs,calcs);
 
 
@@ -57,9 +62,14 @@ int main(void) {
     if (strcmp(command,"del") == 0) {
         
         scanf("%s", command);
+        if(strlen(command) > 10) {
+            puts("this string was never in the list");
+        }
         
-        delete_node(&head,&temp,calcs,command);
-        rearrange_list(&head,&temp);
+        else {
+            delete_node(&head,&temp,calcs,command);
+            rearrange_list(&head,&temp);
+        }   
         //print_list(head,avgs,calcs);
         
     }  
@@ -77,14 +87,24 @@ int main(void) {
     
     if (strcmp(command,"ppr") == 0) {
         scanf("%s", command);
-        print_list(head,&avgs,calcs,"ppr",command);       //to satisfy default print arguments, and get nodes with prefix strings
         
+       if(strlen(command) > 10) {
+            puts("the node for this string was never added to the list");
+       }
+       
+       else{ 
+            print_list(head,&avgs,calcs,"ppr",command);       //to satisfy default print arguments, and get nodes with prefix strings
+       } 
     }
     
    if (strcmp(command,"psu") == 0) {
         scanf("%s", command);
-        print_list(head,&avgs,calcs,"psu",command);       //to satisfy default print arguments, and get nodes with prefix strings
-        
+        if(strlen(command) > 10) {
+            puts("the node for this string was never added to the list");
+        }
+        else {
+            print_list(head,&avgs,calcs,"psu",command);       //to satisfy default print arguments, and get nodes with prefix strings
+        }
     }
       
       
@@ -102,8 +122,8 @@ int main(void) {
         calcs[1] = *command- '0';
         scanf("%s", command);
         calcs[2] = *command-'0';
-        printf("this is where we begin %d\n", calcs[1]);
-        printf("this is where we end %d\n", calcs[2]);
+        //printf("this is where we begin %d\n", calcs[1]);
+        //printf("this is where we end %d\n", calcs[2]);
         print_list(head,&avgs,calcs,holder,decision);
         
     }  
