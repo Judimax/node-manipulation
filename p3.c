@@ -2,11 +2,15 @@
 
 Name: Michael Odumosu
 Unix login id: mo422733
-
+Lab TA: Julia Turner
 Lab Day: Friday
 Lab Time: 1:40pm
 
-Project Description : this program is a very powerful program with several capabilities in terms of manipulating and displaying information from a linked list, although the node sturcture object is simple, this program can insert new nodes, rearrage the nodes according to a decreasing occurence of the node, and remove node(s) from the linked lists by either specify a string, or specify a number and all nodes with counts less than that number are to be removed from this list. In addition the program provides the user with several helpful print functions to get what is needed from the data.
+Project Description : this program is a very powerful program with several capabilities in terms of manipulating and displaying
+information from a linked list, although the node sturcture object is simple, this program can insert new nodes, rearrage the nodes
+according to a decreasing occurence of the node, and remove node(s) from the linked lists by either specify a string, or specify a
+number and all nodes with counts less than that number are to be removed from this list. In addition the program provides the user with
+several helpful print functions to get what is needed from the data.
 */
 
 
@@ -129,6 +133,19 @@ int main(void) {
         
     }  
       
+    if (strcmp(command,"plrs") == 0) {
+        
+        char holder[4] = "plrs";                //used to tell print_list node what to do for command
+        scanf("%s", command);                  //using calcs array that returns statistics for range values
+        calcs[1] = *command- '0';
+        scanf("%s", command);
+        calcs[2] = *command-'0';
+        //printf("this is where we begin %d\n", calcs[1]);
+        //printf("this is where we end %d\n", calcs[2]);
+        print_list(head,&avgs,calcs,holder,decision);
+        
+    }  
+    
     if (strcmp(command,"pcr") == 0) {
         
         char holder[4] = "pcr";                //used to tell print_list node what to do for command
@@ -140,7 +157,7 @@ int main(void) {
         //printf("this is where we end %d\n", calcs[2]);
         print_list(head,&avgs,calcs,holder,decision);
         
-    }  
+    }    
     
     if (strcmp(command,"pst") == 0) {
         
@@ -387,7 +404,7 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[],char 
         return "done";
     }   
   }
-  if (strcmp(k_string,"pcr") == 0 ) {      //conditional that prints desired indexes of linked list
+  if (strcmp(k_string,"plrs") == 0 ) {      //conditional that prints desired indexes of linked list
     i = 0;
     check = h;
     while(check != NULL) {
@@ -398,6 +415,18 @@ char* print_list(struct node *h, float* avg, int * stats, char  c_string[],char 
         i++;
     }
   } 
+  
+  if (strcmp(k_string,"pcr") == 0 ) {      //conditional that prints desired indexes of linked list
+    i = 0;
+    check = h;
+    while(check != NULL) {
+        if(check->count >= stats[1] && check->count<=stats[2]) {     //used stats indexes as ranges instead
+            printf("count: %d  symbol:  %s\n",check->count,check->symbol[0]);
+        }
+        check = check->next;
+        i++;
+    }
+  }   
     
   if (strcmp(k_string,"ppr") == 0 ) {      //conditional that prints desired indexes of linked list
     i = 0;
